@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房地合一稅自我檢測 - 宏國地政｜易丞地政</title>
+    <meta name="description" content="只需30秒，快速判斷您的賣屋稅制！舊制、新制、房地合一稅全解析。">
+    
+    <style>
+        :root {
+            --primary-color: #1a5f7a;   /* 品牌深藍 */
+            --accent-color: #d4a017;    /* 品牌金 */
+            --bg-color: #f4f7f6;        /* 淺灰背景 */
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --line-green: #06c755;
+            --option-bg: #e3f2fd;       /* 選項背景 */
+            --option-hover: #bbdefb;    /* 選項懸停 */
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px 20px 100px 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- Header --- */
+        .logo-header {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .logo-img {
+            max-height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin: 10px 0 30px 0;
+            font-size: 1.6em;
+            border-bottom: 4px solid var(--accent-color);
+            padding-bottom: 10px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* --- 測驗區塊 --- */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .question-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .question-title::before {
+            content: 'Q.';
+            font-size: 1.5em;
+            color: var(--accent-color);
+            margin-right: 10px;
+            line-height: 1;
+        }
+
+        /* 選項按鈕 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background-color: var(--option-bg);
+            border: 2px solid transparent;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.05em;
+            color: #1565c0;
+            font-weight: bold;
+            position: relative;
+        }
+        .option-btn:hover {
+            background-color: var(--option-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .note-text {
+            display: block;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: normal;
+            margin-top: 5px;
+        }
+
+        /* --- 結果區塊 --- */
+        .result-box {
+            text-align: center;
+            padding: 20px;
+        }
+        .result-title {
+            font-size: 1.4em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .result-desc {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        /* --- 稅率圖表 (CSS Table) --- */
+        .tax-rate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        .tax-rate-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+        }
+        .tax-rate-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .rate-high { color: #c62828; } /* 45% */
+        .rate-mid { color: #ef6c00; }  /* 35% */
+        .rate-low { color: #2e7d32; }  /* 20% 15% */
+
+        /* 輸入框樣式 */
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* --- 頁尾 --- */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.95em;
+        }
+        .footer strong {
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        .contact-info {
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+        .contact-info a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        /* --- 底部懸浮按鈕 --- */
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            z-index: 999;
+            box-sizing: border-box;
+        }
+        .sticky-btn {
+            background-color: var(--line-green);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(6, 199, 85, 0.4);
+            width: 90%;
+            max-width: 600px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="logo-header">
+        <img src="宏國地政封面.jpg" alt="宏國地政 Logo" class="logo-img">
+        <img src="易丞logo-01.jpg" alt="易丞地政 Logo" class="logo-img">
+    </div>
+
+    <h1>🔍 房地合一稅 自我檢測站</h1>
+
+    <div id="quiz-container">
+        
+        <div id="step-1" class="quiz-card">
+            <div class="question-title">您是民國幾年取得不動產的？<br>(請查看權狀登記日期)</div>
+            <div class="options-grid">
+                <button class="option-btn" onclick="goToStep('old-system')">
+                    1. 民國 101年 08月 以前
+                    <span class="note-text">👉 舊制：財產交易所得稅</span>
+                </button>
+                <button class="option-btn" onclick="goToStep('middle-system')">
+                    2. 民國 101/08 ~ 104/12/31
+                    <span class="note-text">👉 舊制：需留意是否拆算房地價</span>
+                </button>
+                <button class="option-btn" onclick="goToStep('new-system')">
+                    3. 民國 105年 以後
+                    <span class="note-text">👉 新制：房地合一稅</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="step-old-2" class="quiz-card hidden">
+            <div class="question-title">當初取得的對象是？</div>
+            <div class="options-grid">
+                <button class="option-btn" onclick="showResult('old-developer')">
+                    A. 跟建設公司購買
+                    <span class="note-text">備註：國稅局可能有成交價格紀錄</span>
+                </button>
+                <button class="option-btn" onclick="showResult('old-individual')">
+                    B. 跟一般民眾購買
+                    <span class="note-text">備註：可能無紀錄，可依房屋現值計算</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="step-mid-2" class="quiz-card hidden">
+            <div class="question-title">當初成交價有「拆算房地價格」嗎？</div>
+            <div class="options-grid">
+                <button class="option-btn" onclick="goToStep('mid-input')">
+                    A. 有拆算
+                    <span class="note-text">需填寫建物與土地價格</span>
+                </button>
+                <button class="option-btn" onclick="showResult('mid-no-split')">
+                    B. 沒有拆算 / 不清楚
+                </button>
+            </div>
+        </div>
+
+        <div id="step-mid-input" class="quiz-card hidden">
+            <div class="question-title">請輸入當初拆算的價格：</div>
+            <div class="input-group">
+                <label>🏠 建物價格 (萬元)：</label>
+                <input type="number" id="building-price" placeholder="例如：500">
+            </div>
+            <div class="input-group">
+                <label>🌏 土地價格 (萬元)：</label>
+                <input type="number" id="land-price" placeholder="例如：1000">
+            </div>
+            <button class="option-btn" style="background-color: var(--accent-color); color:white; text-align:center;" onclick="showResult('mid-calc')">
+                確認送出
+            </button>
+        </div>
+
+        <div id="step-new-2" class="quiz-card hidden">
+            <div class="question-title">取得原因是什麼？</div>
+            
+            <div style="margin-bottom:20px;">
+                <p style="font-weight:bold; color:var(--primary-color);">📊 房地合一稅 持有期間稅率表：</p>
+                <table class="tax-rate-table">
+                    <tr><th>持有期間</th><th>稅率</th></tr>
+                    <tr><td>2年以下</td><td class="rate-high">45%</td></tr>
+                    <tr><td>2~5年</td><td class="rate-mid">35%</td></tr>
+                    <tr><td>5~10年</td><td class="rate-low">20%</td></tr>
+                    <tr><td>10年以上</td><td class="rate-low">15%</td></tr>
+                </table>
+            </div>
+
+            <div class="options-grid">
+                <button class="option-btn" onclick="showResult('new-trade')">
+                    A. 買賣、贈與取得
+                    <span class="note-text">備註：適用房地合一稅</span>
+                </button>
+                <button class="option-btn" onclick="showResult('new-other')">
+                    B. 其他登記原因
+                    <span class="note-text">備註：不一定有房地合一稅 (需個案認定)</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="quiz-card hidden result-box">
+            <h2 class="result-title">🎉 初步檢測完成！</h2>
+            <div id="result-content" class="result-desc">
+                </div>
+            <p>稅務規劃差一點就差很多！<br>建議將您的情況傳送給我們，由專業代書為您精算。</p>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p><strong>宏國地政 × 易丞地政</strong><br>專業、效率、透明</p>
+        <div class="contact-info">
+            📞 電話：<a href="tel:062582589">06-258-2589</a><br>
+            📍 地址：<a href="https://maps.app.goo.gl/YourMapLink" target="_blank">台南市北區文賢路1080巷11號</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="sticky-footer">
+    <a href="#" id="line-link" target="_blank" class="sticky-btn">
+        🚀 傳送結果至 LINE 諮詢
+    </a>
+</div>
+
+<script>
+    // 你的 LINE ID
+    const LINE_ID = "@604gpqef";
+    
+    // 暫存用戶的選擇
+    let userSelection = {};
+
+    function goToStep(step) {
+        // 隱藏所有卡片
+        document.querySelectorAll('.quiz-card').forEach(el => el.classList.add('hidden'));
+        
+        // 根據選擇顯示下一張卡片
+        if (step === 'old-system') {
+            userSelection.period = "民國101年08月以前 (舊制)";
+            document.getElementById('step-old-2').classList.remove('hidden');
+        } else if (step === 'middle-system') {
+            userSelection.period = "民國101/08~104 (舊制過渡期)";
+            document.getElementById('step-mid-2').classList.remove('hidden');
+        } else if (step === 'new-system') {
+            userSelection.period = "民國105年以後 (新制)";
+            document.getElementById('step-new-2').classList.remove('hidden');
+        } else if (step === 'mid-input') {
+            document.getElementById('step-mid-input').classList.remove('hidden');
+        }
+    }
+
+    function showResult(type) {
+        document.querySelectorAll('.quiz-card').forEach(el => el.classList.add('hidden'));
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        let resultText = "";
+        let details = "";
+
+        if (type === 'old-developer') {
+            details = "向建設公司購買 (國稅局可能有成交紀錄)。";
+            resultText = "由於可能有成交紀錄，建議核實申報。若無紀錄，可依「房屋評定現值」比例計算所得。";
+        } else if (type === 'old-individual') {
+            details = "向一般民眾購買。";
+            resultText = "通常查無原始成本，有機會使用「標準扣除額」申報，稅負可能較低。";
+        } else if (type === 'mid-no-split') {
+            details = "無拆算房地價格。";
+            resultText = "屬於舊制財產交易所得稅。需於登記日後隔年5月申報。建議由我們協助調閱資料評估。";
+        } else if (type === 'mid-calc') {
+            let bPrice = document.getElementById('building-price').value || 0;
+            let lPrice = document.getElementById('land-price').value || 0;
+            details = `有拆算價格：建物 ${bPrice}萬 / 土地 ${lPrice}萬。`;
+            resultText = "您已提供拆算價格，這對計算財產交易所得非常有幫助！請傳送此數據給我們進行精算。";
+        } else if (type === 'new-trade') {
+            details = "買賣/贈與取得。";
+            resultText = "確認適用「房地合一稅」！稅率依持有期間 45%~15% 不等。建議提前規劃重購退稅或自住優惠。";
+        } else if (type === 'new-other') {
+            details = "其他原因取得 (如繼承、分割)。";
+            resultText = "特殊取得原因不一定適用房地合一稅，或有特殊的成本認定方式。此情況較複雜，建議直接諮詢。";
+        }
+
+        // 顯示結果文字
+        const finalHtml = `
+            <p><strong>🕒 取得時間：</strong> ${userSelection.period}</p>
+            <p><strong>📝 詳細情況：</strong> ${details}</p>
+            <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">
+            <p style="color:#1a5f7a; font-weight:bold;">💡 專家建議：<br>${resultText}</p>
+        `;
+        document.getElementById('result-content').innerHTML = finalHtml;
+
+        // 生成 LINE 連結
+        const msg = `【房地合一稅自我檢測】\n\n🕒 取得時間：${userSelection.period}\n📝 詳細情況：${details}\n\n我想預約專業諮詢評估！`;
+        const lineUrl = `https://line.me/R/oaMessage/${LINE_ID}/?text=${encodeURIComponent(msg)}`;
+        
+        // 更新按鈕連結
+        const btn = document.getElementById('line-link');
+        btn.href = lineUrl;
+        btn.innerText = "🚀 傳送結果並預約諮詢";
+    }
+</script>
+
+</body>
+</html>
