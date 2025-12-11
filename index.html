@@ -2,306 +2,248 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>房地合一稅自我檢測 - 宏國地政｜易丞地政</title>
-    <meta name="description" content="只需30秒，快速判斷您的賣屋稅制！舊制、新制、房地合一稅全解析。">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>房地合一稅自我檢測 - 宏國地政 | 易丞地政</title>
     
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary-color: #1a5f7a;   /* 品牌深藍 */
-            --accent-color: #d4a017;    /* 品牌金 */
-            --bg-color: #f4f7f6;        /* 淺灰背景 */
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --line-green: #06c755;
-            --option-bg: #e3f2fd;       /* 選項背景 */
-            --option-hover: #bbdefb;    /* 選項懸停 */
+            --nexus-navy: #0F2E46;
+            --nexus-gold: #C5A065;
+            --nexus-bg: #f0f2f5;
         }
 
-        body {
-            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px 20px 100px 20px;
-            color: var(--text-color);
-            line-height: 1.6;
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: var(--nexus-bg);
+            color: #333;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* --- Header --- */
-        .logo-header {
+        /* 1. 品牌頭部設計 */
+        .brand-section {
+            background: linear-gradient(135deg, var(--nexus-navy) 0%, #1a3a5a 100%);
+            padding: 2rem 1rem 4rem 1rem;
+            color: white;
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
+            box-shadow: 0 10px 30px -5px rgba(15, 46, 70, 0.3);
+            position: relative;
+            z-index: 0;
             text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .logo-img {
-            max-height: 70px;
-            width: auto;
-            object-fit: contain;
         }
 
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin: 10px 0 30px 0;
-            font-size: 1.6em;
-            border-bottom: 4px solid var(--accent-color);
-            padding-bottom: 10px;
-            display: inline-block;
-            width: 100%;
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 0.5rem;
+            color: var(--nexus-gold);
         }
 
-        /* --- 測驗區塊 --- */
+        /* 2. 連結按鈕矩陣 */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            max-width: 600px;
+            margin: 1.5rem auto 0 auto;
+        }
+
+        .btn-link {
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 1rem; text-decoration: none; font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-link:active { transform: scale(0.95); }
+
+        .btn-line {
+            background: #06C755; color: white;
+            grid-column: span 4; /* 佔滿整行 */
+            padding: 1rem; font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(6, 199, 85, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(6, 199, 85, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(6, 199, 85, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 199, 85, 0); }
+        }
+
+        .btn-fb { background: #1877F2; color: white; grid-column: span 2; padding: 0.8rem; font-size: 0.9rem; }
+        .btn-map { background: #EA4335; color: white; grid-column: span 2; padding: 0.8rem; font-size: 0.9rem; }
+        .btn-vip { 
+            background: linear-gradient(90deg, #111 0%, #333 100%); 
+            color: #FFD700; border: 1px solid #FFD700; 
+            grid-column: span 4; padding: 0.8rem; font-size: 0.9rem;
+        }
+
+        /* 3. 卡片容器 */
+        .main-content {
+            max-width: 600px;
+            margin: -3rem auto 0 auto;
+            position: relative;
+            z-index: 10;
+            padding: 0 1rem;
+            padding-bottom: 100px;
+        }
+
         .quiz-card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            padding: 30px;
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-            animation: fadeIn 0.5s ease-in-out;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid white;
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .question-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
+            font-size: 1.25rem; font-weight: 700; color: var(--nexus-navy);
+            margin-bottom: 1.5rem; display: flex; align-items: start;
+            line-height: 1.4;
         }
-        .question-title::before {
-            content: 'Q.';
-            font-size: 1.5em;
-            color: var(--accent-color);
-            margin-right: 10px;
-            line-height: 1;
-        }
+        .question-icon { color: var(--nexus-gold); margin-right: 0.75rem; font-size: 1.5rem; }
 
         /* 選項按鈕 */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
         .option-btn {
-            background-color: var(--option-bg);
-            border: 2px solid transparent;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1.05em;
-            color: #1565c0;
-            font-weight: bold;
-            position: relative;
+            width: 100%; text-align: left;
+            padding: 1.2rem; margin-bottom: 1rem;
+            background: #f8fafc; border: 2px solid #e2e8f0;
+            border-radius: 1rem; cursor: pointer;
+            transition: all 0.2s; position: relative;
+            font-weight: 600; color: #334155;
         }
         .option-btn:hover {
-            background-color: var(--option-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-color: var(--nexus-navy); background: #f1f5f9;
+            color: var(--nexus-navy); transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .option-btn:active {
-            transform: scale(0.98);
+        .option-note { display: block; font-size: 0.8rem; color: #64748b; font-weight: normal; margin-top: 0.3rem; }
+
+        /* 輸入框 */
+        .nexus-input {
+            width: 100%; padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0; border-radius: 0.8rem;
+            font-size: 1rem; margin-bottom: 1rem;
+            transition: all 0.3s;
         }
+        .nexus-input:focus { outline: none; border-color: var(--nexus-navy); background: #fff; }
+
+        /* 結果區塊 */
+        .result-box { text-align: center; }
+        .result-icon { font-size: 3rem; color: var(--nexus-gold); margin-bottom: 1rem; }
+        .result-text { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 1.5rem; border-radius: 1rem; text-align: left; margin-bottom: 1.5rem; }
         
-        .note-text {
-            display: block;
-            font-size: 0.85em;
-            color: #666;
-            font-weight: normal;
-            margin-top: 5px;
-        }
-
-        /* --- 結果區塊 --- */
-        .result-box {
-            text-align: center;
-            padding: 20px;
-        }
-        .result-title {
-            font-size: 1.4em;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .result-desc {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: left;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--primary-color);
-        }
-
-        /* --- 稅率圖表 (CSS Table) --- */
-        .tax-rate-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-        }
-        .tax-rate-table th {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px;
-        }
-        .tax-rate-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .rate-high { color: #c62828; } /* 45% */
-        .rate-mid { color: #ef6c00; }  /* 35% */
-        .rate-low { color: #2e7d32; }  /* 20% 15% */
-
-        /* 輸入框樣式 */
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        /* --- 頁尾 --- */
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            color: #666;
-            font-size: 0.95em;
-        }
-        .footer strong {
-            color: var(--primary-color);
-            font-size: 1.1em;
-        }
-        .contact-info {
-            margin-top: 10px;
-            line-height: 1.8;
-        }
-        .contact-info a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        /* --- 底部懸浮按鈕 --- */
+        /* 懸浮按鈕 */
         .sticky-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-            z-index: 999;
-            box-sizing: border-box;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            padding: 1rem; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); z-index: 50;
+            display: flex; justify-content: center;
         }
         .sticky-btn {
-            background-color: var(--line-green);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 18px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(6, 199, 85, 0.4);
-            width: 90%;
-            max-width: 600px;
-            text-decoration: none;
-            display: block;
-            text-align: center;
-            animation: pulse 2s infinite;
+            background: var(--nexus-navy); color: white;
+            width: 100%; max-width: 600px;
+            padding: 1rem; border-radius: 50px;
+            font-weight: 700; text-align: center;
+            box-shadow: 0 4px 15px rgba(15, 46, 70, 0.3);
+            transition: all 0.3s;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .sticky-btn:active { transform: scale(0.98); }
 
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <div class="logo-header">
-        <img src="宏國地政封面.jpg" alt="宏國地政 Logo" class="logo-img">
-        <img src="易丞logo-01.jpg" alt="易丞地政 Logo" class="logo-img">
+<div class="brand-section">
+    <div class="max-w-2xl mx-auto">
+        <div class="brand-title">宏國地政 | 易丞地政</div>
+        <div class="text-sm opacity-80 tracking-widest uppercase mb-6">Tax Self-Check System</div>
+        
+        <h2 class="text-2xl font-bold mb-2">🔍 房地合一稅 自我檢測</h2>
+        <p class="text-sm opacity-90">30秒快速判斷您的稅制，精準節稅規劃</p>
+
+        <div class="link-grid">
+            <a href="https://line.me/R/ti/p/@604gpqef" target="_blank" class="btn-link btn-line">
+                <i class="fab fa-line mr-2"></i> 加入官方好友 (免費諮詢)
+            </a>
+            <a href="https://www.facebook.com/062582589a/" target="_blank" class="btn-link btn-fb">
+                <i class="fab fa-facebook mr-1"></i> FB 粉專
+            </a>
+            <a href="https://maps.app.goo.gl/qyKhdrKsG5QBo2BW8" target="_blank" class="btn-link btn-map">
+                <i class="fas fa-map-marker-alt mr-1"></i> 地圖導航
+            </a>
+            <a href="https://line.me/ti/g2/aVklWxyLP1RtfstQsslGQOlP4KViuFI7PPucdQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="btn-link btn-vip">
+                <i class="fas fa-crown mr-2"></i> 加入宏國地政研究院 (VIP)
+            </a>
+        </div>
     </div>
+</div>
 
-    <h1>🔍 房地合一稅 自我檢測站</h1>
-
+<div class="main-content">
+    
     <div id="quiz-container">
         
         <div id="step-1" class="quiz-card">
-            <div class="question-title">您是民國幾年取得不動產的？<br>(請查看權狀登記日期)</div>
+            <div class="question-title">
+                <i class="fas fa-calendar-alt question-icon"></i>
+                <div>您是民國幾年取得不動產的？<div class="text-sm text-gray-400 font-normal mt-1">(請查看權狀登記日期)</div></div>
+            </div>
             <div class="options-grid">
                 <button class="option-btn" onclick="goToStep('old-system')">
                     1. 民國 101年 08月 以前
-                    <span class="note-text">👉 舊制：財產交易所得稅</span>
+                    <span class="option-note">👉 舊制：財產交易所得稅</span>
                 </button>
                 <button class="option-btn" onclick="goToStep('middle-system')">
                     2. 民國 101/08 ~ 104/12/31
-                    <span class="note-text">👉 舊制：需留意是否拆算房地價</span>
+                    <span class="option-note">👉 舊制：需留意是否拆算房地價</span>
                 </button>
                 <button class="option-btn" onclick="goToStep('new-system')">
                     3. 民國 105年 以後
-                    <span class="note-text">👉 新制：房地合一稅</span>
+                    <span class="option-note">👉 新制：房地合一稅</span>
                 </button>
             </div>
         </div>
 
         <div id="step-old-2" class="quiz-card hidden">
-            <div class="question-title">當初取得的對象是？</div>
+            <div class="question-title">
+                <i class="fas fa-handshake question-icon"></i>
+                當初取得的對象是？
+            </div>
             <div class="options-grid">
                 <button class="option-btn" onclick="showResult('old-developer')">
                     A. 跟建設公司購買
-                    <span class="note-text">備註：國稅局可能有成交價格紀錄</span>
+                    <span class="option-note">備註：國稅局可能有成交價格紀錄</span>
                 </button>
                 <button class="option-btn" onclick="showResult('old-individual')">
                     B. 跟一般民眾購買
-                    <span class="note-text">備註：可能無紀錄，可依房屋現值計算</span>
+                    <span class="option-note">備註：可能無紀錄，可依房屋現值計算</span>
                 </button>
             </div>
         </div>
 
         <div id="step-mid-2" class="quiz-card hidden">
-            <div class="question-title">當初成交價有「拆算房地價格」嗎？</div>
+            <div class="question-title">
+                <i class="fas fa-file-invoice-dollar question-icon"></i>
+                當初成交價有「拆算房地價格」嗎？
+            </div>
             <div class="options-grid">
                 <button class="option-btn" onclick="goToStep('mid-input')">
                     A. 有拆算
-                    <span class="note-text">需填寫建物與土地價格</span>
+                    <span class="option-note">需填寫建物與土地價格</span>
                 </button>
                 <button class="option-btn" onclick="showResult('mid-no-split')">
                     B. 沒有拆算 / 不清楚
@@ -310,83 +252,83 @@
         </div>
 
         <div id="step-mid-input" class="quiz-card hidden">
-            <div class="question-title">請輸入當初拆算的價格：</div>
-            <div class="input-group">
-                <label>🏠 建物價格 (萬元)：</label>
-                <input type="number" id="building-price" placeholder="例如：500">
+            <div class="question-title">
+                <i class="fas fa-calculator question-icon"></i>
+                請輸入當初拆算的價格：
             </div>
-            <div class="input-group">
-                <label>🌏 土地價格 (萬元)：</label>
-                <input type="number" id="land-price" placeholder="例如：1000">
+            <div class="mb-4">
+                <label class="block text-gray-600 mb-2 font-bold">🏠 建物價格 (萬元)</label>
+                <input type="number" id="building-price" class="nexus-input" placeholder="例如：500">
             </div>
-            <button class="option-btn" style="background-color: var(--accent-color); color:white; text-align:center;" onclick="showResult('mid-calc')">
+            <div class="mb-6">
+                <label class="block text-gray-600 mb-2 font-bold">🌏 土地價格 (萬元)</label>
+                <input type="number" id="land-price" class="nexus-input" placeholder="例如：1000">
+            </div>
+            <button class="w-full bg-[#C5A065] text-white font-bold py-3 rounded-xl shadow-lg hover:bg-[#b08d55] transition" onclick="showResult('mid-calc')">
                 確認送出
             </button>
         </div>
 
         <div id="step-new-2" class="quiz-card hidden">
-            <div class="question-title">取得原因是什麼？</div>
+            <div class="question-title">
+                <i class="fas fa-question-circle question-icon"></i>
+                取得原因是什麼？
+            </div>
             
-            <div style="margin-bottom:20px;">
-                <p style="font-weight:bold; color:var(--primary-color);">📊 房地合一稅 持有期間稅率表：</p>
-                <table class="tax-rate-table">
-                    <tr><th>持有期間</th><th>稅率</th></tr>
-                    <tr><td>2年以下</td><td class="rate-high">45%</td></tr>
-                    <tr><td>2~5年</td><td class="rate-mid">35%</td></tr>
-                    <tr><td>5~10年</td><td class="rate-low">20%</td></tr>
-                    <tr><td>10年以上</td><td class="rate-low">15%</td></tr>
-                </table>
+            <div class="bg-gray-50 p-4 rounded-xl mb-6 text-sm border border-gray-200">
+                <p class="font-bold text-[#0F2E46] mb-2"><i class="fas fa-info-circle"></i> 房地合一稅 持有期間稅率表：</p>
+                <ul class="space-y-1 text-gray-600">
+                    <li>🔴 2年以下：<span class="font-bold text-red-600">45%</span></li>
+                    <li>🟠 2~5年：<span class="font-bold text-orange-500">35%</span></li>
+                    <li>🟢 5~10年：<span class="font-bold text-green-600">20%</span></li>
+                    <li>🔵 10年以上：<span class="font-bold text-blue-600">15%</span></li>
+                </ul>
             </div>
 
             <div class="options-grid">
                 <button class="option-btn" onclick="showResult('new-trade')">
                     A. 買賣、贈與取得
-                    <span class="note-text">備註：適用房地合一稅</span>
+                    <span class="option-note">備註：適用房地合一稅</span>
                 </button>
                 <button class="option-btn" onclick="showResult('new-other')">
                     B. 其他登記原因
-                    <span class="note-text">備註：不一定有房地合一稅 (需個案認定)</span>
+                    <span class="option-note">備註：不一定有房地合一稅 (需個案認定)</span>
                 </button>
             </div>
         </div>
 
         <div id="result-screen" class="quiz-card hidden result-box">
-            <h2 class="result-title">🎉 初步檢測完成！</h2>
-            <div id="result-content" class="result-desc">
+            <div class="result-icon"><i class="fas fa-clipboard-check"></i></div>
+            <h2 class="text-2xl font-bold text-[#0F2E46] mb-4">初步檢測完成！</h2>
+            
+            <div id="result-content" class="result-text">
                 </div>
-            <p>稅務規劃差一點就差很多！<br>建議將您的情況傳送給我們，由專業代書為您精算。</p>
+            
+            <p class="text-sm text-gray-500 mb-2">稅務規劃差一點就差很多！<br>建議將您的情況傳送給我們，由專業代書為您精算。</p>
         </div>
 
     </div>
 
-    <div class="footer">
-        <p><strong>宏國地政 × 易丞地政</strong><br>專業、效率、透明</p>
-        <div class="contact-info">
-            📞 電話：<a href="tel:062582589">06-258-2589</a><br>
-            📍 地址：<a href="https://maps.app.goo.gl/YourMapLink" target="_blank">台南市北區文賢路1080巷11號</a>
-        </div>
+    <div class="text-center text-xs text-gray-400 mt-8">
+        © 2025 宏國地政 | 易丞地政<br>
+        台南市北區文賢路1080巷11號
     </div>
 
 </div>
 
 <div class="sticky-footer">
     <a href="#" id="line-link" target="_blank" class="sticky-btn">
-        🚀 傳送結果至 LINE 諮詢
+        <i class="fab fa-line mr-2"></i> 傳送結果至 LINE 諮詢
     </a>
 </div>
 
 <script>
-    // 你的 LINE ID
     const LINE_ID = "@604gpqef";
-    
-    // 暫存用戶的選擇
     let userSelection = {};
 
     function goToStep(step) {
-        // 隱藏所有卡片
         document.querySelectorAll('.quiz-card').forEach(el => el.classList.add('hidden'));
         
-        // 根據選擇顯示下一張卡片
         if (step === 'old-system') {
             userSelection.period = "民國101年08月以前 (舊制)";
             document.getElementById('step-old-2').classList.remove('hidden');
@@ -432,21 +374,21 @@
 
         // 顯示結果文字
         const finalHtml = `
-            <p><strong>🕒 取得時間：</strong> ${userSelection.period}</p>
-            <p><strong>📝 詳細情況：</strong> ${details}</p>
-            <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">
-            <p style="color:#1a5f7a; font-weight:bold;">💡 專家建議：<br>${resultText}</p>
+            <div class="mb-3"><strong class="text-[#0F2E46]">🕒 取得時間：</strong> ${userSelection.period}</div>
+            <div class="mb-3"><strong class="text-[#0F2E46]">📝 詳細情況：</strong> ${details}</div>
+            <div class="border-t border-dashed border-green-300 my-3"></div>
+            <div><strong class="text-[#0F2E46]">💡 專家建議：</strong><br>${resultText}</div>
         `;
         document.getElementById('result-content').innerHTML = finalHtml;
 
         // 生成 LINE 連結
-        const msg = `【房地合一稅自我檢測】\n\n🕒 取得時間：${userSelection.period}\n📝 詳細情況：${details}\n\n我想預約專業諮詢評估！`;
+        const msg = `【房地合一稅自我檢測】\n\n🕒 取得時間：${userSelection.period}\n📝 詳細情況：${details}\n💡 系統建議：${resultText}\n\n我想預約專業諮詢評估！`;
         const lineUrl = `https://line.me/R/oaMessage/${LINE_ID}/?text=${encodeURIComponent(msg)}`;
         
         // 更新按鈕連結
         const btn = document.getElementById('line-link');
         btn.href = lineUrl;
-        btn.innerText = "🚀 傳送結果並預約諮詢";
+        btn.innerHTML = '<i class="fab fa-line mr-2"></i> 傳送結果並預約諮詢';
     }
 </script>
 
