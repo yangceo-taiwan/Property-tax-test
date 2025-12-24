@@ -22,6 +22,11 @@
             background-color: var(--nexus-bg);
             color: #333;
             -webkit-tap-highlight-color: transparent;
+            /* 禁止選取文字 (防護層) */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         /* 1. 品牌頭部設計 */
@@ -124,6 +129,8 @@
             border-radius: 1rem; cursor: pointer;
             transition: all 0.2s; position: relative;
             font-weight: 600; color: #334155;
+            /* 允許按鈕文字被點擊，但不允許被選取 */
+            user-select: none;
         }
         .option-btn:hover {
             border-color: var(--nexus-navy); background: #f1f5f9;
@@ -138,6 +145,8 @@
             border: 2px solid #e2e8f0; border-radius: 0.8rem;
             font-size: 1rem; margin-bottom: 1rem;
             transition: all 0.3s;
+            /* 輸入框必須允許互動 */
+            user-select: text; 
         }
         .nexus-input:focus { outline: none; border-color: var(--nexus-navy); background: #fff; }
 
@@ -165,6 +174,32 @@
 
         .hidden { display: none; }
     </style>
+    
+    <script>
+        // 禁止右鍵
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 禁止特定按鍵組合 (F12, Ctrl+U, Ctrl+Shift+I 等)
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123) { // F12
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+Shift+C
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+                return false;
+            }
+        };
+    </script>
 </head>
 <body>
 
